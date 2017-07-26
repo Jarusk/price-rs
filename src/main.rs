@@ -3,12 +3,21 @@ extern crate hyper;
 extern crate tokio_core;
 
 use std::io::{self, Write};
+use std::collections::BTreeMap;
 use futures::{Future, Stream};
 use hyper::Client;
 use tokio_core::reactor::Core;
 
 const APP_ID: &str = "56b8dbfc7d0e4425b9d42c53a274e3e2";
 const URL_LATEST: &str = "http://openexchangerates.org/api/latest.json";
+
+struct Lastest_ex<'a> {
+    disclaimer: &'a str,
+    license: &'a str,
+    timestamp: usize,
+    base: &'a str,
+    rates: BTreeMap<&'a str, f64>
+}
 
 fn main() {
     let mut core = Core::new().unwrap();
