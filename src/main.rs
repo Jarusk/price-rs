@@ -2,6 +2,7 @@ extern crate futures;
 extern crate hyper;
 extern crate tokio_core;
 extern crate serde_json;
+extern crate time;
 
 #[macro_use]
 extern crate serde_derive;
@@ -21,7 +22,7 @@ const URL_LATEST: &str = "http://openexchangerates.org/api/latest.json";
 struct Xchg {
     disclaimer: String,
     license: String,
-    timestamp: usize,
+    timestamp: i64,
     base: String,
     rates: BTreeMap<String, f64>,
 }
@@ -45,5 +46,16 @@ fn main() {
     });
 
     let res = core.run(work).unwrap();
-    println!("{:?}", &res);
+
+    println!("{:?}",xchg_still_valid(&res));
+}
+
+fn xchg_still_valid(stored: &Xchg) -> bool {
+    let now = time::get_time().sec;
+    //println!("Current: {}\n Stored: {}\n  Delta: {}", now, stored.timestamp, now - stored.timestamp);
+    if now - stored.timestamp < 3600 {
+        true
+    }else{
+        false
+    }
 }
