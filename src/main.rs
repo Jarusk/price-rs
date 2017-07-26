@@ -65,15 +65,15 @@ fn main() {
 
     let res = core.run(work).unwrap();
 
-    println!("{:?}",xchg_still_valid(&res));
+    println!("{:?}", xchg_still_valid(&res));
 }
 
 fn xchg_still_valid(stored: &Xchg) -> bool {
     let now = time::get_time().sec;
-    //println!("Current: {}\n Stored: {}\n  Delta: {}", now, stored.timestamp, now - stored.timestamp);
+
     if now - stored.timestamp < 3600 {
         true
-    }else{
+    } else {
         false
     }
 }
