@@ -19,3 +19,7 @@
 pub const CONFIG_NAME: &str = ".price-rs.conf";
 pub const XCHG_NAME: &str = "price-rs-cache.json";
 pub const URL_LATEST: &str = "http://openexchangerates.org/api/latest.json";
+pub const DEFAULT_BASE_CURRENCY: &str = "USD";
+pub const DEFAULT_TARGET_CURRENCY: &str = "CAD";
+pub const DEFAULT_TAX_RATE: f32 = 1.13;
+pub const APPLY_TAX: bool = true;

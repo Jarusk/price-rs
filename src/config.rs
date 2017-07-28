@@ -27,6 +27,10 @@ use std::io;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     app_id: String,
+    base_currency: String,
+    target_currency: String,
+    apply_tax: bool,
+    tax_rate: f32,
 }
 
 impl Config {
@@ -86,5 +90,11 @@ fn get_app_id() -> Config {
         Err(e) => panic!("Error reading: {}", e),
     };
 
-    Config { app_id: app_id.trim().to_owned() }
+    Config {
+        app_id: app_id.trim().to_owned(),
+        base_currency: constants::DEFAULT_BASE_CURRENCY.to_owned(),
+        target_currency: constants::DEFAULT_TARGET_CURRENCY.to_owned(),
+        tax_rate: constants::DEFAULT_TAX_RATE,
+        apply_tax: constants::APPLY_TAX,
+    }
 }
