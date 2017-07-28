@@ -29,7 +29,6 @@ use std::io;
 use constants;
 use config::Config;
 
-//const APP_ID: &str = "56b8dbfc7d0e4425b9d42c53a274e3e2";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Xchg {
