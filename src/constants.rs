@@ -16,6 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const STORAGE_PATH_WIN: &str = "";
-const STORAGE_PATH_NIX: &str = "";
-const FILENAME: &str = "";
+pub const CONFIG_NAME: &str = ".price-rs.conf";
+pub const URL_LATEST: &str = "http://openexchangerates.org/api/latest.json";
