@@ -95,9 +95,6 @@ impl Xchg {
             rates = pull_rates(conf);
         }
 
-        // This line will force the file to be closed
-        // above by killing the last reference to it
-        let file = 0;
 
         if refreshed_rates {
             debug_assert!({
