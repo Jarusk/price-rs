@@ -17,4 +17,5 @@
  */
 
 pub const CONFIG_NAME: &str = ".price-rs.conf";
+pub const XCHG_NAME: &str = "price-rs-cache.json";
 pub const URL_LATEST: &str = "http://openexchangerates.org/api/latest.json";

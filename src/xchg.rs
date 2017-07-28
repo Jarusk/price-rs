@@ -24,8 +24,13 @@ extern crate serde_json;
 use self::futures::{Future, Stream};
 use self::hyper::Client;
 use self::tokio_core::reactor::Core;
+
 use std::collections::BTreeMap;
 use std::io;
+use std::env;
+use std::path::Path;
+use std::fs::File;
+
 use constants;
 use config::Config;
 
@@ -45,12 +50,80 @@ impl Xchg {
         return now - self.timestamp < 3600;
     }
 
+    pub fn store(&self, p: &Path) -> Result<(), String> {
+        let file = match File::create(p) {
+            Err(e) => {
+                println!("Warning: {:?}", e);
+                return Err(e.to_string());
+            }
+            Ok(f) => f,
+        };
+
+        match serde_json::to_writer(file, &self) {
+            Err(e) => Err(e.to_string()),
+            Ok(_) => Ok(()),
+        }
+    }
+
     pub fn load_or_create(conf: &Config) -> Xchg {
-        fetch_rates(conf)
+        let mut tmp_env = "/tmp".to_string();
+
+        match env::var("TMP") {
+            Ok(v) => tmp_env = v,
+            Err(_) => {}
+        };
+
+        let xchg_json_path = Path::new(&tmp_env).join(constants::XCHG_NAME);
+
+        let file = match File::open(&xchg_json_path) {
+            Err(_) => File::create(&xchg_json_path).unwrap(),
+            Ok(f) => f,
+        };
+
+        let mut refreshed_rates = false;
+
+        let mut rates: Xchg = match serde_json::from_reader(file) {
+            Ok(x) => x,
+            _ => {
+                refreshed_rates = true;
+                pull_rates(conf)
+            }
+        };
+
+        if !rates.still_valid() {
+            refreshed_rates = true;
+            rates = pull_rates(conf);
+        }
+
+        // This line will force the file to be closed
+        // above by killing the last reference to it
+        let file = 0;
+
+        if refreshed_rates {
+            debug_assert!({
+                println!("HAD TO PULL", );
+                true
+            });
+            match rates.store(&xchg_json_path) {
+                Err(e) => println!("Warning: Could not cache rates file: {:?}", e),
+                Ok(_) => {}
+            };
+        } else {
+            debug_assert!({
+                println!("USED CACHE", );
+                true
+            });
+        }
+
+        return rates;
     }
 }
 
-fn fetch_rates(conf: &Config) -> Xchg {
+fn pull_rates(conf: &Config) -> Xchg {
+    debug_assert!({
+        println!("PULLING");
+        true
+    });
     let mut core = Core::new().unwrap();
     let client = Client::new(&core.handle());
 
