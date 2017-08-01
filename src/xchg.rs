@@ -65,6 +65,12 @@ impl Xchg {
         }
     }
 
+    pub fn print_rates(&self) {
+        for (c, v) in &self.rates {
+            println!("{} => {}", c, v);
+        }
+    }
+
     pub fn load_or_create(conf: &Config) -> Xchg {
         let mut tmp_env = "/tmp".to_string();
 

@@ -30,5 +30,5 @@ fn main() {
     let conf = Config::load_or_create();
     let res = Xchg::load_or_create(&conf);
 
-    println!("{:?}", res);
+    res.print_rates();
 }

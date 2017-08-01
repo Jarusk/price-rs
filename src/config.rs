@@ -75,6 +75,10 @@ impl Config {
     pub fn get_app_id(&self) -> &str {
         self.app_id.as_ref()
     }
+
+    pub fn read_args(&mut self) {
+        unimplemented!();
+    }
 }
 
 fn get_app_id() -> Config {
@@ -82,7 +86,7 @@ fn get_app_id() -> Config {
     message += "Performing initial config.\n";
     message += "This utility relies upon the use of OpenExchangeRates.org.\n";
     message += "Please register there and return once you have an App ID\n\n";
-    message += "Please input your APP ID:";
+    message += "\nPlease input your APP ID:";
 
     let mut app_id = String::new();
     println!("{}", &message);
@@ -92,7 +96,7 @@ fn get_app_id() -> Config {
     };
 
     let mut base = String::new();
-    println!("Please enter the default base currency [USD]:");
+    println!("\nPlease enter the default base currency [USD]:");
     match io::stdin().read_line(&mut base) {
         Ok(_) => {}
         Err(e) => panic!("Error reading: {}", e),
@@ -103,7 +107,7 @@ fn get_app_id() -> Config {
     }
 
     let mut target = String::new();
-    println!("Please enter the default target currency [CAD]:");
+    println!("\nPlease enter the default target currency [CAD]:");
     match io::stdin().read_line(&mut target) {
         Ok(_) => {}
         Err(e) => panic!("Error reading: {}", e),
@@ -114,7 +118,7 @@ fn get_app_id() -> Config {
     }
 
     let mut tax_rate = String::new();
-    println!("Please enter the default tax rate.\nFor example, if its 13%, enter 1.13 [1.13]:");
+    println!("\nPlease enter the default tax rate.\nFor example, if its 13%, enter 1.13 [1.13]:");
     match io::stdin().read_line(&mut tax_rate) {
         Ok(_) => {}
         Err(e) => panic!("Error reading: {}", e),
@@ -128,7 +132,7 @@ fn get_app_id() -> Config {
     let mut enable_tax = constants::APPLY_TAX;
 
     'valid: loop {
-        println!("Should tax be applied by default? [Yn]:");
+        println!("\nShould tax be applied by default? [Yn]:");
         match io::stdin().read_line(&mut enable_tax_buffer) {
             Ok(_) => {}
             Err(e) => panic!("Error reading: {}", e),
