@@ -32,6 +32,7 @@ pub struct Config {
     target_currency: String,
     apply_tax: bool,
     tax_rate: f32,
+    print_help: bool,
 }
 
 impl Config {
@@ -74,10 +75,6 @@ impl Config {
 
     pub fn get_app_id(&self) -> &str {
         self.app_id.as_ref()
-    }
-
-    pub fn read_args(&mut self) {
-        unimplemented!();
     }
 }
 
@@ -157,5 +154,6 @@ fn get_app_id() -> Config {
         target_currency: target,
         tax_rate: tax_rate,
         apply_tax: enable_tax,
+        print_help: false,
     }
 }
